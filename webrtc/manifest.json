@@ -1,0 +1,52 @@
+{
+  "manifest_version": 3,
+  "name": "WebRTC Blocker",
+  "version": "2.0",
+  "description": "Blocks WebRTC leaks and hardens browser fingerprinting.",
+  "minimum_chrome_version": "116",
+  "permissions": [
+    "privacy",
+    "storage",
+    "scripting",
+    "tabs",
+    "notifications",
+    "declarativeNetRequestWithHostAccess"
+  ],
+  "host_permissions": [ "<all_urls>" ],
+  "background": {
+    "service_worker": "background.js"
+  },
+  "content_scripts": [
+    {
+      "matches": [ "<all_urls>" ],
+      "js": [ "rules.js", "content.js" ],
+      "run_at": "document_start",
+      "all_frames": true,
+      "match_about_blank": true
+    }
+  ],
+  "action": {
+    "default_title": "WebRTC Blocker",
+    "default_popup": "popup.html"
+  },
+  "options_ui": {
+    "page": "options.html",
+    "open_in_tab": true
+  },
+  "commands": {
+    "toggle-blocker": {
+      "suggested_key": { "default": "Alt+Shift+W" },
+      "description": "Toggle WebRTC blocking"
+    }
+  },
+  "web_accessible_resources": [
+    {
+      "resources": [ "test.html", "test.css", "test.js" ],
+      "matches": [ "<all_urls>" ]
+    }
+  ],
+  "icons": {
+    "48": "icons/icon48.png",
+    "128": "icons/icon128.png"
+  }
+}
