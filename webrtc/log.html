@@ -1,0 +1,24 @@
+﻿<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="color-scheme" content="light dark" />
+    <title>WebRTC Blocker — Activity Log</title>
+    <link rel="stylesheet" href="log.css" />
+</head>
+<body>
+    <div class="page">
+        <header class="page-header">
+            <h1>Activity Log</h1>
+            <div class="header-actions">
+                <span id="total" class="total">0 total</span>
+                <button id="clearBtn" class="btn danger">Clear</button>
+            </div>
+        </header>
+        <ul id="logList" class="log-list"></ul>
+        <p id="empty" class="empty">No blocked attempts yet.</p>
+    </div>
+    <script src="theme.js"></script>
+    <script src="log.js"></script>
+</body>
+</html>

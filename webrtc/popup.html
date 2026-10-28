@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="color-scheme" content="light dark" />
+  <title>WebRTC Blocker</title>
+  <link rel="stylesheet" href="popup.css" />
+</head>
+<body>
+  <div class="app">
+    <header class="header">
+      <div class="logo" aria-hidden="true">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+             stroke-linecap="round" stroke-linejoin="round">
+          <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" />
+          <path d="M9 12l2 2 4-4" />
+        </svg>
+      </div>
+      <div class="titles">
+        <h1>WebRTC Blocker</h1>
+        <p id="statusText" class="status">Protection is on</p>
+      </div>
+      <button id="themeToggle" class="theme-btn" title="Theme">
+        <svg class="icon-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+             stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <circle cx="12" cy="12" r="4"/>
+          <path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"/>
+        </svg>
+        <svg class="icon-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+             stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>
+        </svg>
+      </button>
+    </header>
+
+    <main class="content">
+      <label class="toggle-row" for="toggle">
+        <span class="toggle-label">
+          <span class="toggle-title">Block WebRTC</span>
+          <span class="toggle-sub">Prevents real IP leaks</span>
+        </span>
+        <span class="switch">
+          <input type="checkbox" id="toggle" role="switch" aria-label="Toggle blocking" />
+          <span class="slider"></span>
+        </span>
+      </label>
+
+      <div class="info-card">
+        <div class="info-row">
+          <span class="info-label">Status</span>
+          <span id="stateChip" class="chip chip-on">Active</span>
+        </div>
+        <div class="info-row">
+          <span class="info-label">Blocked</span>
+          <span id="counter" class="info-value">0</span>
+        </div>
+        <div class="info-row">
+          <span class="info-label">Your IP</span>
+          <span id="ipValue" class="info-value">—</span>
+        </div>
+      </div>
+
+      <button id="allowSite" class="action-btn">
+        <span id="allowLabel">Allow on this site</span>
+      </button>
+
+      <div class="link-row">
+        <a href="#" id="openOptions" class="link">Options</a>
+        <span class="sep">•</span>
+        <a href="#" id="openLog" class="link">Log</a>
+        <span class="sep">•</span>
+        <a href="#" id="openTest" class="link">Test</a>
+      </div>
+    </main>
+
+    <footer class="footer">
+      <span class="dot" id="indicator"></span>
+      <span id="footerText">Active on all sites</span>
+      <span class="version">v2.0</span>
+    </footer>
+  </div>
+  <script src="theme.js"></script>
+  <script src="popup.js"></script>
+</body>
+</html>

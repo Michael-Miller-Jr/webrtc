@@ -1,0 +1,81 @@
+﻿<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="color-scheme" content="light dark" />
+    <title>WebRTC Blocker — Options</title>
+    <link rel="stylesheet" href="options.css" />
+</head>
+<body>
+    <div class="page">
+        <header class="page-header">
+            <h1>WebRTC Blocker — Options</h1>
+            <button id="themeToggle" class="theme-btn" title="Theme">◐</button>
+        </header>
+
+        <section class="card">
+            <h2>Privacy hardening</h2>
+            <label class="check-row"><input type="checkbox" id="t-webrtc" /> Block WebRTC (RTCPeerConnection)</label>
+            <label class="check-row"><input type="checkbox" id="t-media" /> Block camera / microphone access</label>
+            <label class="check-row"><input type="checkbox" id="t-canvas" /> Add noise to canvas fingerprinting</label>
+            <label class="check-row"><input type="checkbox" id="t-webgl" /> Spoof WebGL vendor / renderer</label>
+            <label class="check-row"><input type="checkbox" id="t-timezone" /> Force timezone to UTC</label>
+        </section>
+
+        <section class="card">
+            <h2>WebRTC IP handling policy</h2>
+            <select id="policySelect">
+                <option value="default">Default (no blocking)</option>
+                <option value="default_public_and_private_interfaces">Public + private interfaces</option>
+                <option value="default_public_interface_only">Public interface only</option>
+                <option value="disable_non_proxied_udp">Disable non-proxied UDP (strict)</option>
+            </select>
+            <p class="hint">Chrome enforces this at the network layer. Changes apply immediately.</p>
+        </section>
+
+        <section class="card">
+            <h2>Presets</h2>
+            <div class="preset-row">
+                <button class="preset" data-preset="paranoid">Paranoid</button>
+                <button class="preset" data-preset="balanced">Balanced</button>
+                <button class="preset" data-preset="compat">Compatibility</button>
+            </div>
+            <p class="hint" id="presetHint">Choose a bundle. You can fine-tune below afterward.</p>
+        </section>
+
+        <section class="card">
+            <h2>Per-site rules</h2>
+            <p class="hint">
+                One rule per line. Syntax: <code>pattern action category…</code><br>
+                Examples:<br>
+                <code>*.meet.google.com allow webrtc media</code><br>
+                <code>*.bank.com block *</code><br>
+                <code>* block webrtc</code>
+            </p>
+            <textarea id="rulesText" rows="7" spellcheck="false" placeholder="* block webrtc&#10;*.meet.google.com allow webrtc media"></textarea>
+        </section>
+
+        <section class="card">
+            <h2>Allowlist (quick)</h2>
+            <p class="hint">Domains here bypass all blocking. One per line.</p>
+            <textarea id="allowText" rows="5" spellcheck="false" placeholder="meet.example.com&#10;discord.com"></textarea>
+        </section>
+
+        <section class="card">
+            <h2>Import / export</h2>
+            <div class="io-row">
+                <button id="exportBtn" class="io-btn">Export settings</button>
+                <button id="importBtn" class="io-btn">Import settings</button>
+                <button id="resetBtn" class="io-btn danger">Reset all</button>
+            </div>
+            <textarea id="ioText" rows="4" spellcheck="false" placeholder="Settings JSON appears here after export, or paste to import."></textarea>
+        </section>
+
+        <div id="toast" class="toast">Saved</div>
+    </div>
+
+    <script src="rules.js"></script>
+    <script src="theme.js"></script>
+    <script src="options.js"></script>
+</body>
+</html>

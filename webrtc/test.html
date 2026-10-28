@@ -1,0 +1,68 @@
+﻿<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="color-scheme" content="light dark" />
+    <title>WebRTC Blocker — Leak Test</title>
+    <link rel="stylesheet" href="test.css" />
+</head>
+<body>
+    <div class="page">
+        <header class="page-header">
+            <h1>Leak Test</h1>
+            <button id="runBtn" class="btn primary">Run test</button>
+        </header>
+
+        <ul class="results">
+            <li id="r-webrtc" class="result pending">
+                <span class="badge">…</span>
+                <div class="body">
+                    <div class="title">WebRTC</div>
+                    <div class="detail">Not tested</div>
+                </div>
+            </li>
+            <li id="r-media" class="result pending">
+                <span class="badge">…</span>
+                <div class="body">
+                    <div class="title">Camera / microphone</div>
+                    <div class="detail">Not tested</div>
+                </div>
+            </li>
+            <li id="r-ip" class="result pending">
+                <span class="badge">…</span>
+                <div class="body">
+                    <div class="title">Public IP (WebRTC)</div>
+                    <div class="detail">Not tested</div>
+                </div>
+            </li>
+            <li id="r-timezone" class="result pending">
+                <span class="badge">…</span>
+                <div class="body">
+                    <div class="title">Timezone</div>
+                    <div class="detail">Not tested</div>
+                </div>
+            </li>
+            <li id="r-canvas" class="result pending">
+                <span class="badge">…</span>
+                <div class="body">
+                    <div class="title">Canvas fingerprint</div>
+                    <div class="detail">Not tested</div>
+                </div>
+            </li>
+            <li id="r-webgl" class="result pending">
+                <span class="badge">…</span>
+                <div class="body">
+                    <div class="title">WebGL renderer</div>
+                    <div class="detail">Not tested</div>
+                </div>
+            </li>
+        </ul>
+
+        <p class="hint">
+            Green = blocked/spoofed. Red = leak detected. This page runs entirely in your browser.
+        </p>
+    </div>
+    <script src="theme.js"></script>
+    <script src="test.js"></script>
+</body>
+</html>
