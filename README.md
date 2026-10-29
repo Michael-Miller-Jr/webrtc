@@ -1,5 +1,7 @@
 # WebRTC Blocker
 
+<img width="344" height="482" alt="Screenshot 2026-10-28 205515" src="https://github.com/user-attachments/assets/78fcbfd6-6762-4cc7-8e05-2b2b5be185d4" />
+
 **WebRTC Blocker** is a Chrome extension designed to stop your browser from leaking your real IP address through WebRTC. While it doesn't block ads itself, it hardens your browser against modern fingerprinting techniques like Canvas noise injection, WebGL spoofing, and timezone masking. It enforces Chrome's strictest network-level IP policy, ensuring your VPN works the way it's supposed to. All detection attempts are logged locally, and you stay in control with a clean, user-friendly popup and options interface.
 
 For the sake of clarity: When the description says it "hides your IP" or "hardens your browser," it means that the extension:
@@ -42,9 +44,15 @@ When paired with a trusted VPN, WebRTC Blocker adds another layer of control and
 
 - **Built-in Leak Test**  
   A dedicated test page runs entirely in your browser to verify WebRTC, Media, Canvas, WebGL, and Timezone protections are actively working.
+-- <img width="915" height="613" alt="Screenshot 2026-10-28 205557" src="https://github.com/user-attachments/assets/5deeacdf-470b-41e9-8ded-1d719f0ebc96" />
+
 
 - **Enable/Disable with One Click**  
   Use the popup toggle to instantly enable or disable stealth functionality. Choose from Paranoid, Balanced, or Compatibility presets to instantly dial in your privacy settings.
+
+- <img width="1147" height="1270" alt="Screenshot 2026-10-28 205530" src="https://github.com/user-attachments/assets/ee47cd8f-650f-4d87-811a-11cf49095412" />
+
+- <img width="1020" height="749" alt="Screenshot 2026-10-28 205538" src="https://github.com/user-attachments/assets/681507bc-5634-41c6-b63f-2fafc78a605a" />
 
 ---
 
