@@ -1,6 +1,6 @@
 # WebRTC Blocker
 
-<img width="344" height="482" alt="Screenshot 2026-10-28 205515" src="https://github.com/user-attachments/assets/78fcbfd6-6762-4cc7-8e05-2b2b5be185d4" />
+<img width="344" height="482" alt="Extension Popup" src="https://github.com/user-attachments/assets/72e8ed12-c5c9-4b84-87f8-7529e77e9aa9" />
 
 **WebRTC Blocker** is a Chrome extension designed to stop your browser from leaking your real IP address through WebRTC. While it doesn't block ads itself, it hardens your browser against modern fingerprinting techniques like Canvas noise injection, WebGL spoofing, and timezone masking. It enforces Chrome's strictest network-level IP policy, ensuring your VPN works the way it's supposed to. All detection attempts are logged locally, and you stay in control with a clean, user-friendly popup and options interface.
 
