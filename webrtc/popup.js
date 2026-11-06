@@ -14,6 +14,8 @@ const ipValue = document.getElementById("ipValue");
 const themeBtn = document.getElementById("themeToggle");
 const allowBtn = document.getElementById("allowSite");
 const allowLabel = document.getElementById("allowLabel");
+const copyrightYear = document.getElementById("copyright-year");
+const revokeMicBtn = document.getElementById("revokeMic");
 
 // Theme is handled by theme.js
 window.WRTCBTheme.init();
@@ -86,12 +88,78 @@ async function initAllowButton() {
     });
 }
 
+// --- Dynamic Revoke Mic Logic ---
+async function initRevokeMicButton() {
+    const [tab] = await chrome.tabs.query({ active: true, currentWindow: true });
+    const dropdown = document.querySelector(".advanced-dropdown");
+
+    if (tab?.url && (tab.url.startsWith("http://") || tab.url.startsWith("https://"))) {
+
+        revokeMicBtn.style.display = "flex";
+
+        let host = "";
+        try {
+            host = new URL(tab.url).hostname.replace(/^www\./, '');
+        } catch (e) { }
+
+        const labelSpan = revokeMicBtn.querySelector("span:first-child");
+        const subLabelSpan = revokeMicBtn.querySelector("span:last-child");
+
+        // Check current permission status from Chrome
+        chrome.contentSettings.microphone.get({
+            primaryUrl: tab.url
+        }, (details) => {
+            if (chrome.runtime.lastError || !details) {
+                if (labelSpan) labelSpan.textContent = `Revoke Mic on ${host}`;
+                return;
+            }
+
+            if (details.setting === "ask") {
+                // Already revoked / prompt state
+                if (labelSpan) labelSpan.textContent = `Currently Revoked (${host})`;
+                if (subLabelSpan) subLabelSpan.textContent = "Mic is set to Prompt";
+                revokeMicBtn.disabled = true;
+                revokeMicBtn.style.opacity = "0.6";
+                revokeMicBtn.style.cursor = "not-allowed";
+            } else {
+                // Permission is granted or blocked
+                if (labelSpan) labelSpan.textContent = `Revoke Mic on ${host}`;
+                if (subLabelSpan) subLabelSpan.textContent = "Will reload current page";
+
+                revokeMicBtn.onclick = () => {
+                    chrome.runtime.sendMessage({
+                        type: "revoke-mic",
+                        origin: new URL(tab.url).origin,
+                        tabId: tab.id
+                    });
+                };
+            }
+        });
+    } else {
+        // If not on a valid web page, hide the dropdown entirely
+        if (dropdown) dropdown.style.display = "none";
+    }
+}
+// --------------------------------
+
+function initCopyrightYear() {
+    if (!copyrightYear) return;
+    const startYear = 2025;
+    const currentYear = new Date().getFullYear();
+    copyrightYear.textContent = currentYear > startYear
+        ? `${startYear} - ${currentYear}`
+        : `${startYear}`;
+}
+
 async function init() {
+    initCopyrightYear();
+
     const { [KEYS.enabled]: enabled = true } = await chrome.storage.sync.get({ [KEYS.enabled]: true });
     render(enabled);
     refreshCounter();
     refreshIP();
     initAllowButton();
+    initRevokeMicButton();
 
     toggle.addEventListener("change", async () => {
         await chrome.storage.sync.set({ [KEYS.enabled]: toggle.checked });
@@ -106,10 +174,21 @@ async function init() {
         e.preventDefault();
         chrome.tabs.create({ url: chrome.runtime.getURL("log.html") });
     });
+
+    // Existing Test Link at the bottom
     document.getElementById("openTest").addEventListener("click", (e) => {
         e.preventDefault();
         chrome.tabs.create({ url: chrome.runtime.getURL("test.html") });
     });
+
+    // NEW: Dropdown Test Button
+    const dropdownTestBtn = document.getElementById("dropdownTestBtn");
+    if (dropdownTestBtn) {
+        dropdownTestBtn.addEventListener("click", (e) => {
+            e.preventDefault();
+            chrome.tabs.create({ url: chrome.runtime.getURL("test.html") });
+        });
+    }
 }
 
 chrome.storage.onChanged.addListener((changes, area) => {

@@ -87,6 +87,27 @@ async function notifyFirstBlock(host, kind) {
 /* ---------------- Message handler ---------------- */
 
 chrome.runtime.onMessage.addListener((msg, sender, sendResponse) => {
+    // --- Handle Revoke Mic Permission ---
+    if (msg?.type === "revoke-mic" && msg.origin && msg.tabId) {
+        const pattern = `${msg.origin}/*`;
+
+        // Explicitly set the permission to "ask" to force a prompt reset
+        chrome.contentSettings.microphone.set({
+            primaryPattern: pattern,
+            setting: "ask"
+        }, () => {
+            if (chrome.runtime.lastError) {
+                console.error("[WebRTC Blocker] Revoke error:", chrome.runtime.lastError);
+            }
+
+            // Reload the tab so the user sees the change immediately
+            chrome.tabs.reload(msg.tabId);
+            sendResponse({ ok: true });
+        });
+
+        return true; // Keep channel open for async response
+    }
+
     if (msg?.type === "blocked" && sender.tab?.url) {
         try {
             const host = new URL(sender.tab.url).hostname;

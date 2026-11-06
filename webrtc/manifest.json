@@ -1,7 +1,7 @@
 {
   "manifest_version": 3,
   "name": "WebRTC Blocker",
-  "version": "2.0",
+  "version": "2.1",
   "description": "Blocks WebRTC leaks and hardens browser fingerprinting.",
   "minimum_chrome_version": "116",
   "permissions": [
@@ -10,7 +10,8 @@
     "scripting",
     "tabs",
     "notifications",
-    "declarativeNetRequestWithHostAccess"
+    "declarativeNetRequestWithHostAccess",
+    "contentSettings"
   ],
   "host_permissions": [ "<all_urls>" ],
   "background": {

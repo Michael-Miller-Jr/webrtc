@@ -3,6 +3,8 @@ window.WRTCBTheme.init();
 
 function setResult(id, status, detail) {
     const el = document.getElementById(id);
+    if (!el) return;
+
     el.classList.remove("pending", "pass", "fail");
     el.classList.add(status === "pass" ? "pass" : status === "fail" ? "fail" : "pending");
     el.querySelector(".badge").textContent =
@@ -37,7 +39,7 @@ function createTestEnvironment() {
     const origToDataURL = win.HTMLCanvasElement.prototype.toDataURL;
     win.HTMLCanvasElement.prototype.toDataURL = function (...args) {
         try {
-            const ctx = this.getContext("2d");
+            const ctx = this.getContext("2d", { willReadFrequently: true });
             if (ctx) {
                 const img = ctx.getImageData(0, 0, this.width || 1, this.height || 1);
                 for (let i = 0; i < img.data.length; i += 4) img.data[i] ^= 1;
@@ -145,7 +147,9 @@ async function testTimezone(win) {
 async function testCanvas(win) {
     const a = win.document.createElement("canvas");
     a.width = a.height = 200;
-    const actx = a.getContext("2d");
+
+    // FIXED: Added willReadFrequently so Chrome preps the context correctly
+    const actx = a.getContext("2d", { willReadFrequently: true });
     actx.textBaseline = "top";
     actx.font = "14px Arial";
     actx.fillText("WebRTC Blocker test 🔒", 2, 2);
@@ -173,17 +177,49 @@ async function testWebGL(win) {
     setResult("r-webgl", spoofed ? "pass" : "fail", `${vendor} — ${renderer}`);
 }
 
-document.getElementById("runBtn").addEventListener("click", async () => {
-    // Create the sandboxed test environment
-    const win = createTestEnvironment();
+const runBtn = document.getElementById("runBtn");
+const testRowIds = ["r-webrtc", "r-media", "r-ip", "r-timezone", "r-canvas", "r-webgl"];
 
-    await testWebRTC(win);
-    await testMedia(win);
-    await testIPViaWebRTC(win);
-    await testTimezone(win); // <-- Passed win here
-    await testCanvas(win);
-    await testWebGL(win);
+runBtn.addEventListener("click", async () => {
+    // 1. UI Loading State
+    const originalText = runBtn.textContent;
+    runBtn.textContent = "Testing...";
+    runBtn.classList.add("btn-loading");
+
+    // Reset all rows to pending and fade them slightly
+    testRowIds.forEach(id => {
+        setResult(id, "pending", "Waiting...");
+        const row = document.getElementById(id);
+        if (row) row.classList.add("loading");
+    });
+
+    // Give the browser 50ms to paint the loading UI before we block the thread
+    await new Promise(resolve => setTimeout(resolve, 50));
+
+    try {
+        // 2. Run Tests
+        const win = createTestEnvironment();
+
+        await testWebRTC(win);
+        await testMedia(win);
+        await testIPViaWebRTC(win);
+        await testTimezone(win);
+        await testCanvas(win);
+        await testWebGL(win);
+
+    } catch (err) {
+        console.error("Test suite failed:", err);
+    } finally {
+        // 3. Restore UI
+        runBtn.textContent = originalText;
+        runBtn.classList.remove("btn-loading");
+
+        testRowIds.forEach(id => {
+            const row = document.getElementById(id);
+            if (row) row.classList.remove("loading");
+        });
+    }
 });
 
 // Auto-run on load
-document.getElementById("runBtn").click();
+runBtn.click();
